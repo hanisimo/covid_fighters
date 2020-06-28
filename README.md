@@ -3,10 +3,12 @@ Remember the days of 8bit computing where we only had limited resources to play 
 very simple and the graphics terrible❗️ This a take on an 8bit game, with simple game play and 
 terrible graphics 😅 
 
-#### Running the game
-Clone the repo with: git clone https://github.com/hanisimo/covid_fighters.git
+This game uses a simple flutter code serves as basic "game engine", the engine (core) of the game 
+has been developed based on the published repository on https://github.com/amugofjava/dash_run
 
-Change to the "covid_fighters" directory and then execute: flutter run
+#### Running the game
+- Clone the repo with: git clone https://github.com/hanisimo/covid_fighters.git
+- Change to the "covid_fighters" directory and then execute: flutter run
 
 #### Playing the game
 Swipe left and right to move your team member. Tap to throw a antivirus. If an on of the COVID-19 
@@ -18,7 +20,7 @@ see what he could build within the 5Kb limit and just the Flutter SDK. As such, 
 use any plugins or additional packages.
 
 #### Original Repository 
-This project has been forked of "dash_run" project at "https://github.com/amugofjava/dash_run"
+This project has been forked from "dash_run" project at "https://github.com/amugofjava/dash_run"
 
 #### License
 The original source is made available under the MIT license; and this fork maintains the same MIT 
