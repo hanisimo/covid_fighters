@@ -1,7 +1,7 @@
 # COVID-19 Fighter (Coronavirus 8bit Fighter)
-Remember the days of 8bit computing where we only had limited resources to play with, when games were 
-very simple and the graphics terrible❗️ This a take on an 8bit game, with simple game play and 
-terrible graphics 😅 
+Remember the days of 8bit computing where we only had limited resources to play with, when games 
+were elementary and the graphics terrible❗️ This a take on an 8bit game, with simple gameplay and 
+terribly old fashioned graphics 😅 
 
 This game uses a simple flutter code serves as basic "game engine", the engine (core) of the game 
 has been developed based on the published repository on https://github.com/amugofjava/dash_run
