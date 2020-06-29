@@ -15,8 +15,8 @@ Swipe left and right to move your team member. Tap to throw a antivirus. If an o
 virus manages to reach the ground or peck the Fighter, the game ends.
 
 #### Screenshots
-![Gameplay](screenshots/Screenshot_01.gif)
-![Start Screen](screenshots/Screenshot_02.png)
+![Gameplay](screenshots/Screenshot_01.gif | height=50%)
+![Start Screen](screenshots/Screenshot_02.png | height=50% | width=50%)
 ![Gameplay](screenshots/Screenshot_03.png)
 ![Game Over Screen](screenshots/Screenshot_04.png)
 
