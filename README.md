@@ -16,7 +16,7 @@ virus manages to reach the ground or peck the Fighter, the game ends.
 
 #### Screenshots
 ![Gameplay](screenshots/Screenshot_01.gif)
-![Start Screen](screenshots/Screenshot_02.png)
+![Start Screen](screenshots/Screenshot_02.png | height=50% | width=50%)
 ![Gameplay](screenshots/Screenshot_03.png)
 ![Game Over Screen](screenshots/Screenshot_04.png)
 
