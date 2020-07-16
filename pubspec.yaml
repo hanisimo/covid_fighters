@@ -33,6 +33,45 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.7.3
+  # Flutter Launcher Icons
+  # Check the configurations below at "flutter_icons"
+  # After setup the config file, run the below commands:
+  # flutter pub run flutter_launcher_icons:main -f pubspec.yaml
+  # flutter pub get
+  # flutter pub run flutter_launcher_icons:main
+
+  flutter_launcher_name: ^0.0.1
+  # Flutter Launcher Name
+  # Check the configurations below at "flutter_launcher_name"
+  # After setup the config file, run the below command:
+  # flutter pub run flutter_launcher_name:main
+
+  flutter_native_splash: ^0.1.9
+  # Flutter Native Splash
+  # Check the configurations below at "flutter_native_splash"
+  # After adding the settings, run the package using the below commands:
+  # flutter pub pub run flutter_native_splash:create
+
+# Flutter Launcher Icons Configurations
+flutter_icons:
+  android: true # android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  image_path_android: "assets/icon/icon.png"
+  adaptive_icon_foreground: "assets/icon/icon_adaptive_foreground.png"
+  adaptive_icon_background: "#33ffcc"
+
+# Flutter Launcher Name Configurations
+flutter_launcher_name:
+  name: "COVID-19 Fighters"
+
+# Flutter Native Splash
+flutter_native_splash:
+  image: assets/splash/splash.png
+  color: "#33ffcc"
+  android_disable_fullscreen: false
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -49,7 +88,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/graphics.png
+    - assets/graphics/graphics.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
