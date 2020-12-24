@@ -1,9 +1,9 @@
+import 'package:covid19fighter/engine/game_render_engine.dart';
 import 'package:flutter/material.dart';
 
-import 'package:covid19fighter/engine/game_render_engine.dart';
-
 class WeaponBullet {
-  var fighterHorizontalPosition, bulletVerticalPosition; // Bullet position (x,y)
+  var fighterHorizontalPosition,
+      bulletVerticalPosition; // Bullet position (x,y)
   var gameOver = false; // is the game over?
 
   WeaponBullet(this.fighterHorizontalPosition);
@@ -16,8 +16,12 @@ class WeaponBullet {
     if (bulletVerticalPosition < 0) {
       gameOver = true;
     } else {
-      canvas.drawImageRect(sceneImage, Rect.fromLTWH(32, 0, 32, 32),
-          Rect.fromLTWH(fighterHorizontalPosition, bulletVerticalPosition, elementSize, elementSize), scenePaint);
+      canvas.drawImageRect(
+          sceneImage,
+          Rect.fromLTWH(32, 0, 32, 32),
+          Rect.fromLTWH(fighterHorizontalPosition, bulletVerticalPosition,
+              elementSize, elementSize),
+          scenePaint);
 
       bulletVerticalPosition -= 6;
 
@@ -28,7 +32,10 @@ class WeaponBullet {
             bulletVerticalPosition <= enemy.y + elementSize &&
             !enemy.killed) {
           this.gameOver = enemy.killed = true;
-          currentScore += (size.height - bulletVerticalPosition).ceil();
+          // Update the current score depending on: the enemy position * the game level
+          currentScore +=
+              (size.height - (size.height - bulletVerticalPosition)).ceil() *
+                  currentDifficultyLevel;
           return;
         }
       }
