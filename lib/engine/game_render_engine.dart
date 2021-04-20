@@ -2,15 +2,14 @@ import 'dart:math';
 
 import 'package:covid19fighter/elements/enemy_character.dart';
 import 'package:covid19fighter/elements/weapon_bullet.dart';
-import 'package:covid19fighter/engine/utils.dart';
-import 'package:covid19fighter/main.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart'
-    as intl; // to solve the "TextDirection" definition
+import 'package:intl/intl.dart' as intl;
+
+import 'game_status.dart';
+import 'utils.dart';
 
 final double elementSize = 32.0; // Moving elements, characters & objects size
 
@@ -24,7 +23,7 @@ int currentDifficultyLevel = 1; // Level Difficulty = Enemy Speed
 List<WeaponBullet> weaponBullets; // Weapon Bullets
 List<EnemyCharacter> enemyCharacters; // Enemy Characters
 
-class GameRenderEngine extends RenderBox {
+class GameRenderEngine extends RenderProxyBox {
   // Select a fighter character randomly (using a generator of random int values)
   final int currentFighterCharacter =
       Random().nextInt(3); // Current Fighter Character (Index)
