@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.7.2+2
+version: 0.7.4+1
 
 environment:
-  sdk: ">=2.11.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -27,12 +27,12 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.2
 
   # This package used to provide number formatting
-  intl: ^0.16.1
+  intl: ^0.17.0
 
-  flutter_launcher_icons: ^0.7.3
+  flutter_launcher_icons: ^0.9.0
   # Flutter Launcher Icons
   # Check the configurations below at "flutter_icons"
   # After setup the config file, run the below commands:
@@ -40,13 +40,15 @@ dependencies:
   # flutter pub get
   # flutter pub run flutter_launcher_icons:main
 
-  flutter_launcher_name: ^0.0.1
+  flutter_launcher_name: # ^0.0.1
+    git:
+      url: https://github.com/hanisimo/flutter_launcher_name.git
   # Flutter Launcher Name
   # Check the configurations below at "flutter_launcher_name"
   # After setup the config file, run the below command:
   # flutter pub run flutter_launcher_name:main
 
-  flutter_native_splash: ^0.1.9
+  flutter_native_splash: ^1.1.7+1
   # Flutter Native Splash
   # Check the configurations below at "flutter_native_splash"
   # After adding the settings, run the package using the below commands:

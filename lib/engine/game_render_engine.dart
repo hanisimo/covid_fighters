@@ -20,16 +20,16 @@ Paint scenePaint =
 int currentScore = 0; // Current Score
 int currentDifficultyLevel = 1; // Level Difficulty = Enemy Speed
 
-List<WeaponBullet> weaponBullets; // Weapon Bullets
-List<EnemyCharacter> enemyCharacters; // Enemy Characters
+late List<WeaponBullet> weaponBullets; // Weapon Bullets
+late List<EnemyCharacter> enemyCharacters; // Enemy Characters
 
 class GameRenderEngine extends RenderProxyBox {
   // Select a fighter character randomly (using a generator of random int values)
   final int currentFighterCharacter =
       Random().nextInt(3); // Current Fighter Character (Index)
 
-  double fighterHorizontalPosition; // Fighter X position (Location)
-  int frameCallbackId;
+  double? fighterHorizontalPosition; // Fighter X position (Location)
+  late int frameCallbackId;
 
   @override
   bool get sizedByParent => true;
@@ -84,12 +84,12 @@ class GameRenderEngine extends RenderProxyBox {
   void detach() {
     super.detach();
     // Cancels the transient frame callback with the given id.
-    SchedulerBinding.instance.cancelFrameCallbackWithId(frameCallbackId);
+    SchedulerBinding.instance!.cancelFrameCallbackWithId(frameCallbackId);
   }
 
   // Schedule transient frame callback
   void scheduleTransientFrameCallback() => frameCallbackId =
-      SchedulerBinding.instance.scheduleFrameCallback(frameCallbackTimer);
+      SchedulerBinding.instance!.scheduleFrameCallback(frameCallbackTimer);
 
   // Fire weapon bullet
   void fireWeaponBullet() =>
@@ -161,9 +161,9 @@ class GameRenderEngine extends RenderProxyBox {
       if (fighterHorizontalPosition == null)
         fighterHorizontalPosition = size.width / 2 - 16.0;
 
-      if (fighterHorizontalPosition < 0) fighterHorizontalPosition = 0;
+      if (fighterHorizontalPosition! < 0) fighterHorizontalPosition = 0;
 
-      if (fighterHorizontalPosition > renderBoxSize.width - elementSize)
+      if (fighterHorizontalPosition! > renderBoxSize.width - elementSize)
         fighterHorizontalPosition = renderBoxSize.width - elementSize;
 
       // If all enemies are killed, move to the next level :)
@@ -182,7 +182,7 @@ class GameRenderEngine extends RenderProxyBox {
           Rect.fromLTWH(64 + (currentFighterCharacter * 32.0), 0, elementSize,
               elementSize),
           Rect.fromLTWH(
-              fighterHorizontalPosition, fighterVerticalPosition, 32, 32),
+              fighterHorizontalPosition!, fighterVerticalPosition, 32, 32),
           scenePaint);
 
       // Paint the current score
@@ -194,9 +194,9 @@ class GameRenderEngine extends RenderProxyBox {
 
         // Check if the game is over?
         if (!enemy.killed &&
-            enemy.x >= fighterHorizontalPosition &&
-            enemy.x <= fighterHorizontalPosition + elementSize &&
-            enemy.y + elementSize >= fighterVerticalPosition) {
+            enemy.x! >= fighterHorizontalPosition! &&
+            enemy.x! <= fighterHorizontalPosition! + elementSize &&
+            enemy.y! + elementSize >= fighterVerticalPosition) {
           // Game over :(
           currentScreen = 2;
           return;

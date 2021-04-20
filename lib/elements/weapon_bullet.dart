@@ -27,9 +27,9 @@ class WeaponBullet {
 
       for (var enemy in enemyCharacters) {
         if (fighterHorizontalPosition >= enemy.x &&
-            fighterHorizontalPosition <= enemy.x + elementSize &&
+            fighterHorizontalPosition <= enemy.x! + elementSize &&
             bulletVerticalPosition >= enemy.y &&
-            bulletVerticalPosition <= enemy.y + elementSize &&
+            bulletVerticalPosition <= enemy.y! + elementSize &&
             !enemy.killed) {
           this.gameOver = enemy.killed = true;
           // Update the current score depending on: the enemy position * the game level
