@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:covid19fighter/elements/enemy_character.dart';
 import 'package:covid19fighter/elements/weapon_bullet.dart';
@@ -11,9 +12,9 @@ import 'package:intl/intl.dart' as intl;
 import 'game_status.dart';
 import 'utils.dart';
 
-final double elementSize = 32.0; // Moving elements, characters & objects size
+const double elementSize = 32.0; // Moving elements, characters & objects size
 
-var sceneImage; // Scene Image represents the loaded Graphics Assets
+ui.Image? sceneImage; // Scene Image represents the loaded Graphics Assets
 Paint scenePaint =
     Paint(); // A description of the style to use when drawing on a Canvas
 
@@ -72,8 +73,8 @@ class GameRenderEngine extends RenderProxyBox {
   }
 
   @override
-  void attach(PipelineOwner pipelineOwner) {
-    super.attach(pipelineOwner);
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
     loadGraphicsAssets().then((loadedGraphicsAsset) {
       sceneImage = loadedGraphicsAsset;
       scheduleTransientFrameCallback();
@@ -93,30 +94,28 @@ class GameRenderEngine extends RenderProxyBox {
 
   // Fire weapon bullet
   void fireWeaponBullet() =>
-      weaponBullets.add(WeaponBullet(fighterHorizontalPosition));
+      weaponBullets.add(WeaponBullet(fighterHorizontalPosition!));
 
   // Move fighter
   void moveFighter(double fighterPosition) =>
-      this.fighterHorizontalPosition = fighterPosition;
+      fighterHorizontalPosition = fighterPosition;
 
   // Paint the current score
   void paintCurrentScore(Canvas canvas) {
-    final numberFormatter = new intl.NumberFormat("###,###,###");
+    final numberFormatter = intl.NumberFormat("###,###,###");
 
-    TextSpan currentScoreTextSpan = new TextSpan(
+    TextSpan currentScoreTextSpan = TextSpan(
         // Set the current Score text style
-        style: new TextStyle(
+        style: const TextStyle(
             color: Colors.deepOrange,
             fontSize: 26.0,
             fontWeight: FontWeight.bold),
         // Set the current score
-        text: "Score: ${numberFormatter.format(currentScore)}" +
-            " - " +
-            "Level: " +
-            (currentDifficultyLevel).toString());
+        text:
+            "Score: ${numberFormatter.format(currentScore)} - Level: ${(currentDifficultyLevel).toString()}");
 
     // Create the current score the Text Painter
-    TextPainter currentScoreTextPainter = new TextPainter(
+    TextPainter currentScoreTextPainter = TextPainter(
         text: currentScoreTextSpan,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);
@@ -124,25 +123,25 @@ class GameRenderEngine extends RenderProxyBox {
     currentScoreTextPainter.layout();
 
     // Paint the current score
-    currentScoreTextPainter.paint(canvas, new Offset(12.0, 16.0));
+    currentScoreTextPainter.paint(canvas, const Offset(12.0, 16.0));
   }
 
   // Paint the game scene
   @override
-  void paint(PaintingContext paintingContext, Offset offset) {
+  void paint(PaintingContext context, Offset offset) {
     if (sceneImage == null) return;
 
-    paintingContext.setIsComplexHint();
+    context.setIsComplexHint();
 
-    var paintingContextCanvas = paintingContext.canvas;
+    var paintingContextCanvas = context.canvas;
     var fighterVerticalPosition = size.height - 48;
     var renderBoxSize = size;
 
     // Check if we are at the "Game-intro" screen
     if (currentScreen == 0) {
       paintingContextCanvas.drawImageRect(
-          sceneImage,
-          Rect.fromLTWH(0, 32, 600.0, 960.0),
+          sceneImage!,
+          const Rect.fromLTWH(0, 32, 600.0, 960.0),
           Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
           scenePaint);
       return;
@@ -150,35 +149,35 @@ class GameRenderEngine extends RenderProxyBox {
       // Check if the game is over?
 
       paintingContextCanvas.drawImageRect(
-          sceneImage,
-          Rect.fromLTWH(0, 992, 600.0, 960.0),
+          sceneImage!,
+          const Rect.fromLTWH(0, 992, 600.0, 960.0),
           Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
           scenePaint);
       paintCurrentScore(paintingContextCanvas);
       return;
     } else {
       // The game is active => we are at the "Game Mode"
-      if (fighterHorizontalPosition == null)
-        fighterHorizontalPosition = size.width / 2 - 16.0;
+      fighterHorizontalPosition ??= size.width / 2 - 16.0;
 
       if (fighterHorizontalPosition! < 0) fighterHorizontalPosition = 0;
 
-      if (fighterHorizontalPosition! > renderBoxSize.width - elementSize)
+      if (fighterHorizontalPosition! > renderBoxSize.width - elementSize) {
         fighterHorizontalPosition = renderBoxSize.width - elementSize;
+      }
 
       // If all enemies are killed, move to the next level :)
       if (enemyCharacters.every((enemy) => enemy.killed)) startNewLevel();
 
       // Paint the game scene
       paintingContextCanvas.drawImageRect(
-          sceneImage,
-          Rect.fromLTWH(0, 1952, 600.0, 960.0),
+          sceneImage!,
+          const Rect.fromLTWH(0, 1952, 600.0, 960.0),
           Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
           scenePaint);
 
       // Paint the fighter character
       paintingContextCanvas.drawImageRect(
-          sceneImage,
+          sceneImage!,
           Rect.fromLTWH(64 + (currentFighterCharacter * 32.0), 0, elementSize,
               elementSize),
           Rect.fromLTWH(
@@ -189,7 +188,7 @@ class GameRenderEngine extends RenderProxyBox {
       paintCurrentScore(paintingContextCanvas);
 
       // Paint the enemies characters
-      enemyCharacters.forEach((enemy) {
+      for (var enemy in enemyCharacters) {
         enemy.paint(paintingContextCanvas);
 
         // Check if the game is over?
@@ -201,11 +200,12 @@ class GameRenderEngine extends RenderProxyBox {
           currentScreen = 2;
           return;
         }
-      });
+      }
 
       // Paint the weapon bullets
-      weaponBullets.forEach(
-          (bullet) => bullet.paint(paintingContextCanvas, renderBoxSize));
+      for (var bullet in weaponBullets) {
+        bullet.paint(paintingContextCanvas, renderBoxSize);
+      }
     }
   }
 

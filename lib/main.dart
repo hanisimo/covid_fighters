@@ -24,8 +24,10 @@ class COVID19FighterGame extends StatelessWidget {
   // This widget is the game root.
   final GameWidget gameWidget = GameWidget();
 
+  COVID19FighterGame({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext buildContext) => MediaQuery(
+  Widget build(BuildContext context) => MediaQuery(
         data: MediaQueryData.fromWindow(ui.window),
         child: Container(
           color: Colors.cyan[400],

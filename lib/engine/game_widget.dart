@@ -7,9 +7,10 @@ import 'game_status.dart';
 class GameWidget extends SingleChildRenderObjectWidget {
   final GameRenderEngine gameRenderEngine = GameRenderEngine();
 
+  GameWidget({Key? key}) : super(key: key);
+
   @override
-  RenderObject createRenderObject(BuildContext buildContext) =>
-      gameRenderEngine;
+  RenderObject createRenderObject(BuildContext context) => gameRenderEngine;
 
   // Swipe Handler
   void swipeHandler(double fighterPosition) {
