@@ -6,7 +6,6 @@ import 'package:covid19fighter/elements/weapon_bullet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'game_status.dart';
@@ -85,12 +84,12 @@ class GameRenderEngine extends RenderProxyBox {
   void detach() {
     super.detach();
     // Cancels the transient frame callback with the given id.
-    SchedulerBinding.instance!.cancelFrameCallbackWithId(frameCallbackId);
+    SchedulerBinding.instance.cancelFrameCallbackWithId(frameCallbackId);
   }
 
   // Schedule transient frame callback
   void scheduleTransientFrameCallback() => frameCallbackId =
-      SchedulerBinding.instance!.scheduleFrameCallback(frameCallbackTimer);
+      SchedulerBinding.instance.scheduleFrameCallback(frameCallbackTimer);
 
   // Fire weapon bullet
   void fireWeaponBullet() =>

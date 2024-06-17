@@ -1,10 +1,5 @@
-import 'dart:ui' as ui;
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 import 'engine/game_widget.dart';
 
@@ -24,11 +19,11 @@ class COVID19FighterGame extends StatelessWidget {
   // This widget is the game root.
   final GameWidget gameWidget = GameWidget();
 
-  COVID19FighterGame({Key? key}) : super(key: key);
+  COVID19FighterGame({super.key});
 
   @override
   Widget build(BuildContext context) => MediaQuery(
-        data: MediaQueryData.fromWindow(ui.window),
+        data: MediaQueryData.fromView(View.of(context)),
         child: Container(
           color: Colors.cyan[400],
           child: SafeArea(

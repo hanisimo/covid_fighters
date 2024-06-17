@@ -7,7 +7,7 @@ import 'game_status.dart';
 class GameWidget extends SingleChildRenderObjectWidget {
   final GameRenderEngine gameRenderEngine = GameRenderEngine();
 
-  GameWidget({Key? key}) : super(key: key);
+  GameWidget({super.key});
 
   @override
   RenderObject createRenderObject(BuildContext context) => gameRenderEngine;
