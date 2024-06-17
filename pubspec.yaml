@@ -36,9 +36,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   # Flutter Launcher Icons
   # Check the configurations below at "flutter_icons"
-  # After setup the config file, run the below commands:
-  # flutter pub get
-  # flutter pub run flutter_launcher_icons
+  # After setup the config file, run the below command:
   # dart run flutter_launcher_icons
 
   flutter_launcher_name: # ^0.0.1
@@ -52,7 +50,7 @@ dev_dependencies:
   flutter_native_splash: ^2.4.0
   # Flutter Native Splash
   # Check the configurations below at "flutter_native_splash"
-  # After adding the settings, run the package using the below commands:
+  # After adding the settings, run the package using the below command:
   # dart run flutter_native_splash:create
 
   # The "flutter_lints" package below contains a set of recommended lints to
