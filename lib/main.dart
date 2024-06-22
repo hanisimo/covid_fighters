@@ -24,9 +24,9 @@ class COVID19FighterGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MediaQuery(
         data: MediaQueryData.fromView(View.of(context)),
-        child: Container(
-          color: Colors.cyan[400],
-          child: SafeArea(
+        child: SafeArea(
+          child: Container(
+            color: Colors.cyan[400],
             child: GestureDetector(
                 onTap: () => gameWidget.tapHandler(),
                 onHorizontalDragUpdate: (DragUpdateDetails dragUpdateDetails) =>
