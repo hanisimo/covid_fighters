@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:covid19fighter/elements/enemy_character.dart';
-import 'package:covid19fighter/elements/weapon_bullet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:space_fighters/elements/enemy_character.dart';
+import 'package:space_fighters/elements/weapon_bullet.dart';
 
 import 'game_status.dart';
 import 'utils.dart';

@@ -10,16 +10,16 @@ void main() {
   // Set the preferred orientation to portraitUp
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // Run COVID-19 Fighter Game
-  runApp(COVID19FighterGame());
+  // Run Space Fighters Game
+  runApp(SpaceFightersGame());
 }
 
 // the App level UI widget
-class COVID19FighterGame extends StatelessWidget {
+class SpaceFightersGame extends StatelessWidget {
   // This widget is the game root.
   final GameWidget gameWidget = GameWidget();
 
-  COVID19FighterGame({super.key});
+  SpaceFightersGame({super.key});
 
   @override
   Widget build(BuildContext context) => MediaQuery(

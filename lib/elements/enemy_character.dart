@@ -1,5 +1,5 @@
-import 'package:covid19fighter/engine/game_render_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:space_fighters/engine/game_render_engine.dart';
 
 class EnemyCharacter {
   double? x; // Enemy X position (x, y)

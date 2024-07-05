@@ -1,5 +1,5 @@
-name: covid19fighter
-description: COVID Fighters
+name: space_fighters
+description: Space Fighters
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -75,7 +75,7 @@ flutter_icons:
 
 # Flutter Launcher Name Configurations
 flutter_launcher_name:
-  name: "COVID Fighters"
+  name: "Space Fighters"
 
 # Flutter Native Splash
 flutter_native_splash:
