@@ -1,0 +1,35 @@
+Privacy Policy
+
+Last updated: 08/07/2024
+
+1. Introduction
+Welcome to "The Space Fighters 🚀⭐️". We respect your privacy and are committed to protecting the personal information you may provide us through our game. This Privacy Policy explains how we collect, use, and safeguard your information.
+
+2. Information We Collect
+We do not collect any personal information from our users. Our game does not include any forms for data collection.
+
+3. Use of Information
+Since we do not collect any information, we do not use or store any user data.
+
+4. Third-Party Services
+Our game may contain third-party advertisements or links to other services. These third parties may collect information to provide personalized advertisements or content. We do not control the data collection and use practices of these third parties and are not responsible for their privacy policies.
+
+5. Security
+We implement reasonable security measures to protect the game and its users. However, no method of transmission over the internet or method of electronic storage is 100% secure.
+
+6. Children's Privacy
+Our game is intended for users aged 18 and above. We do not knowingly collect personal information from children under the age of 18. If we become aware that we have inadvertently received personal information from a user under the age of 18, we will delete such information from our records.
+
+7. Changes to This Privacy Policy
+We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.
+
+8. Contact Us
+If you have any questions or concerns about this Privacy Policy, please contact us at:
+
+Email: Contact.BU22.Labs@gmail.com
+
+9. Consent
+By using our game, you consent to our Privacy Policy.
+
+10. Disclaimer
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
