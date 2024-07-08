@@ -1,0 +1,27 @@
+Graphics Assets ChatGPT Prompts 
+
+Background ChatGPT Prompt:
+A simple and colorful background for a mobile game inspired by the provided sample image, in the style of the Asterix cartoon. The background should feature a bright and vibrant sky with a few clouds and rolling green hills. The design should be clean and minimalistic, appealing and relaxing, in a square format. Remove any selection markers or outlines. Replace the blue color in the selected area with one of the shades of green.
+
+Space Fighter Character (A:I) ChatGPT Prompt:
+A cartoon character in the style of the Asterix cartoon, facing the camera with hands on the waist, showing the full body. The character is wearing a space-themed outfit with a cheerful and adventurous expression. The background is white, and the image is in a square format.
+
+Space Fighter Character (B:II) ChatGPT Prompt:
+A cartoon character in the style of the Asterix cartoon, facing the camera with hands on the waist, showing the full body. The character is wearing a unique space-themed outfit with a cheerful and adventurous expression. The background is white, and the image is in a square format.
+
+Space Fighter Character (C:III) ChatGPT Prompt:
+A cartoon character in the style of the Asterix cartoon, facing the camera with hands on the waist, showing the full body. The character is wearing a space-themed outfit with a cheerful and adventurous expression. The background is white.
+
+Space Missile Shot ChatGPT Prompt:
+Create a simple and geometric image featuring a large red circle at the bottom center with a navy blue, upward-pointing, curved arc above it, forming a roof-like shape. The design should be clean and minimalistic.
+
+Star ChatGPT Prompt:
+Create a simple, flat, five-pointed star shape with rounded edges in a solid yellow color. The design should be clean and minimalistic.
+
+Game / App Icon ChatGPT Prompt V1:
+Create an attractive icon for the game based on the below brief: I developed a game called "The Space Fighters 🚀⭐️". To Play the game, the player needs to swipe left and right to move the Space Fighter. Then tap to throw a rocket 🚀. If one of the stars ✨⭐️✨ manages to reach the ground or peck the Space Fighter, the game ends.
+
+Game / App Icon ChatGPT Prompt V2:
+Create an attractive icon for the game 'The Space Fighters 🚀⭐️'. The icon should feature a dynamic and colorful space theme with a sleek Space Fighter in the center. The Space Fighter should be in action, with a rocket launching from it. Include bright, glowing stars around the Space Fighter, and ensure the background has a deep space feel with dark blues and purples. The overall design should be eye-catching and convey a sense of excitement and adventure.
+
+

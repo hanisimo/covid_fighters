@@ -71,7 +71,7 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
   image_path_android: "assets/icon/icon.png"
   adaptive_icon_foreground: "assets/icon/icon_adaptive_foreground.png"
-  adaptive_icon_background: "#33ffcc"
+  adaptive_icon_background: "#330033"
 
 # Flutter Launcher Name Configurations
 flutter_launcher_name:
@@ -80,7 +80,13 @@ flutter_launcher_name:
 # Flutter Native Splash
 flutter_native_splash:
   image: assets/splash/splash.png
-  color: "#33ffcc"
+  color: "#121212"
+  color_dark: "#121212"
+  android_12:
+    image: assets/splash/splash.png
+    icon_background_color: "#121212"
+    image_dark: assets/splash/splash.png
+    icon_background_color_dark: "#121212"
 # android_disable_fullscreen: false
 
 # For information on the generic Dart part of this file, see the

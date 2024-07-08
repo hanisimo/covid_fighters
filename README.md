@@ -11,14 +11,14 @@ has been developed based on the published repository on https://github.com/amugo
 - Change to the "space_fighters" directory and then execute: Flutter run
 
 #### Playing the game
-Swipe left and right to move your team member. Tap to throw a rocket 🚀. If an on of the stars ✨⭐️✨
+Swipe left and right to move your team member. Tap to throw a rocket 🚀. If an one of the stars ✨⭐️✨
 manages to reach the ground or peck the Space Fighter, the game ends.
 
 #### Screenshots
-![Gameplay](screenshots/Screenshot_01.gif)
-![Start Screen](screenshots/Screenshot_02.png)
-![Gameplay](screenshots/Screenshot_03.png)
-![Game Over Screen](screenshots/Screenshot_04.png)
+![Gameplay](screenshots/Screen_recording.gif)
+![Start Screen](screenshots/Screenshot_iOS_01.png)
+![Gameplay](screenshots/Screenshot_iOS_02.png)
+![Game Over Screen](screenshots/Screenshot_iOS_03.png)
 
 #### Third party libraries
 The developer of the original repository (at https://github.com/amugofjava/dash_run) has wanted to 
