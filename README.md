@@ -16,9 +16,9 @@ manages to reach the ground or peck the Space Fighter, the game ends.
 
 #### Screenshots
 ![Gameplay](screenshots/Screen_recording.gif)
-![Start Screen](screenshots/Screenshot_iOS_01.png)
-![Gameplay](screenshots/Screenshot_iOS_02.png)
-![Game Over Screen](screenshots/Screenshot_iOS_03.png)
+![Start Screen](screenshots/Screenshot_01.png)
+![Gameplay](screenshots/Screenshot_02.png)
+![Game Over Screen](screenshots/Screenshot_03.png)
 
 #### Third party libraries
 The developer of the original repository (at https://github.com/amugofjava/dash_run) has wanted to 
