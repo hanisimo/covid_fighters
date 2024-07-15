@@ -6,6 +6,10 @@ terribly old fashioned graphics 😅
 This game uses a simple Flutter code serves as basic "game engine", the engine (core) of the game 
 has been developed based on the published repository on https://github.com/amugofjava/dash_run
 
+#### Download & Try the Space Fighters 🚀⭐️   
+<a href="https://play.google.com/store/apps/details?id=com.sooon.space_fighters"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a>
+
+
 #### Running the game
 - Clone the repo with: git clone https://github.com/hanisimo/space_fighters.git
 - Change to the "space_fighters" directory and then execute: Flutter run
