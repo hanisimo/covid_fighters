@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.8.1
+version: 0.8.3
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: ^3.11.5
 
 dependencies:
   flutter:
@@ -26,14 +26,14 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.9
 
   # This package used to provide number formatting
-  intl: ^0.19.0
+  intl: ^0.20.2
 
 dev_dependencies:
 
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
   # Flutter Launcher Icons
   # Check the configurations below at "flutter_icons"
   # After setup the config file, run the below command:
@@ -47,7 +47,7 @@ dev_dependencies:
   # After setup the config file, run the below command:
   # dart run flutter_launcher_name:main
 
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.4.7
   # Flutter Native Splash
   # Check the configurations below at "flutter_native_splash"
   # After adding the settings, run the package using the below command:
@@ -62,7 +62,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
   flutter_test:
     sdk: flutter

@@ -8,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'package:space_fighters/elements/enemy_character.dart';
 import 'package:space_fighters/elements/weapon_bullet.dart';
 
-import 'game_status.dart';
-import 'utils.dart';
+import 'package:space_fighters/engine/game_status.dart';
+import 'package:space_fighters/engine/utils.dart';
 
 const double elementSize = 32.0; // Moving elements, characters & objects size
 
 ui.Image? sceneImage; // Scene Image represents the loaded Graphics Assets
-Paint scenePaint =
-    Paint(); // A description of the style to use when drawing on a Canvas
+final Paint scenePaint = Paint()
+  ..filterQuality = ui.FilterQuality.low; // Optimization for pixel-art assets
 
 int currentScore = 0; // Current Score
 int currentDifficultyLevel = 1; // Level Difficulty = Enemy Speed
@@ -24,12 +24,17 @@ late List<WeaponBullet> weaponBullets; // Weapon Bullets
 late List<EnemyCharacter> enemyCharacters; // Enemy Characters
 
 class GameRenderEngine extends RenderProxyBox {
-  // Select a fighter character randomly (using a generator of random int values)
-  final int currentFighterCharacter =
-      Random().nextInt(3); // Current Fighter Character (Index)
+  // Select a fighter character randomly
+  final int currentFighterCharacter = Random().nextInt(3);
 
-  double? fighterHorizontalPosition; // Fighter X position (Location)
-  late int frameCallbackId;
+  double? fighterHorizontalPosition;
+  int? frameCallbackId;
+
+  // Caching for Text Rendering Optimization
+  TextPainter? _scorePainter;
+  int _lastScore = -1;
+  int _lastLevel = -1;
+  final _numberFormatter = intl.NumberFormat('###,###,###');
 
   @override
   bool get sizedByParent => true;
@@ -43,11 +48,9 @@ class GameRenderEngine extends RenderProxyBox {
   // start a new level
   void startNewLevel({bool startNewGame = false}) {
     if (startNewGame) {
-      // Start New Game
       currentScore = 0;
       currentDifficultyLevel = 1;
     } else {
-      // Move to the next level
       currentDifficultyLevel++;
     }
 
@@ -56,40 +59,98 @@ class GameRenderEngine extends RenderProxyBox {
 
     // Add a new set of enemy characters
     for (var i = 0; i < (10 * currentDifficultyLevel); i++) {
-      enemyCharacters
-          .add(EnemyCharacter((i * -elementSize), constraints.biggest));
+      enemyCharacters.add(EnemyCharacter((i * -elementSize)));
     }
   }
 
   // FrameCallback Timer
   void frameCallbackTimer(Duration duration) {
-    if (attached) {
-      scheduleTransientFrameCallback();
+    if (!attached) return;
+
+    // Only update and repaint if the game is active
+    if (currentScreen == 1) {
+      _updateGameLogic();
       markNeedsPaint();
-    } else {
+    } else if (currentScreen == 0 || currentScreen == 2) {
+      // Repaint for intro/outro screens, but don't run game logic
+      markNeedsPaint();
+    }
+
+    scheduleTransientFrameCallback();
+  }
+
+  void _updateGameLogic() {
+    final renderBoxSize = size;
+    final fighterVerticalPosition = size.height - 48;
+
+    fighterHorizontalPosition ??= size.width / 2 - 16.0;
+
+    if (fighterHorizontalPosition! < 0) fighterHorizontalPosition = 0;
+
+    if (fighterHorizontalPosition! > renderBoxSize.width - elementSize) {
+      fighterHorizontalPosition = renderBoxSize.width - elementSize;
+    }
+
+    // Update enemies
+    bool allKilled = true;
+    for (var enemy in enemyCharacters) {
+      if (!enemy.killed) {
+        allKilled = false;
+        enemy.update(currentDifficultyLevel, renderBoxSize);
+
+        // Check if the game is over? (Collision with fighter)
+        if (enemy.x! >= fighterHorizontalPosition! &&
+            enemy.x! <= fighterHorizontalPosition! + elementSize &&
+            enemy.y! + elementSize >= fighterVerticalPosition) {
+          // Game over :(
+          currentScreen = 2;
+          return;
+        }
+      }
+    }
+
+    if (allKilled) {
+      startNewLevel();
       return;
     }
+
+    // Update weapon bullets and prune inactive ones
+    weaponBullets.removeWhere((bullet) => bullet.gameOver);
+    
+    // We only check collisions against alive enemies
+    final aliveEnemies = enemyCharacters.where((e) => !e.killed).toList();
+    for (var bullet in weaponBullets) {
+      bullet.update(renderBoxSize, aliveEnemies);
+    }
+    
+    // Prune dead enemies from the main list to optimize next frame's iterations
+    enemyCharacters.removeWhere((enemy) => enemy.killed);
   }
 
   @override
   void attach(PipelineOwner owner) {
     super.attach(owner);
-    loadGraphicsAssets().then((loadedGraphicsAsset) {
-      sceneImage = loadedGraphicsAsset;
-      scheduleTransientFrameCallback();
-    });
+    if (sceneImage == null) {
+      loadGraphicsAssets().then((loadedGraphicsAsset) {
+        sceneImage = loadedGraphicsAsset;
+        markNeedsPaint();
+      });
+    }
+    scheduleTransientFrameCallback();
   }
 
   @override
   void detach() {
+    if (frameCallbackId != null) {
+      SchedulerBinding.instance.cancelFrameCallbackWithId(frameCallbackId!);
+      frameCallbackId = null;
+    }
     super.detach();
-    // Cancels the transient frame callback with the given id.
-    SchedulerBinding.instance.cancelFrameCallbackWithId(frameCallbackId);
   }
 
   // Schedule transient frame callback
-  void scheduleTransientFrameCallback() => frameCallbackId =
-      SchedulerBinding.instance.scheduleFrameCallback(frameCallbackTimer);
+  void scheduleTransientFrameCallback() =>
+      frameCallbackId = SchedulerBinding.instance.scheduleFrameCallback(frameCallbackTimer);
 
   // Fire weapon bullet
   void fireWeaponBullet() =>
@@ -99,30 +160,27 @@ class GameRenderEngine extends RenderProxyBox {
   void moveFighter(double fighterPosition) =>
       fighterHorizontalPosition = fighterPosition;
 
-  // Paint the current score
+  // Paint the current score with layout caching
   void paintCurrentScore(Canvas canvas) {
-    final numberFormatter = intl.NumberFormat("###,###,###");
+    if (_scorePainter == null || _lastScore != currentScore || _lastLevel != currentDifficultyLevel) {
+      _lastScore = currentScore;
+      _lastLevel = currentDifficultyLevel;
 
-    TextSpan currentScoreTextSpan = TextSpan(
-        // Set the current Score text style
-        style: const TextStyle(
+      _scorePainter = TextPainter(
+        text: TextSpan(
+          style: const TextStyle(
             color: Colors.deepOrange,
             fontSize: 26.0,
-            fontWeight: FontWeight.bold),
-        // Set the current score
-        text:
-            "Score: ${numberFormatter.format(currentScore)} - Level: ${(currentDifficultyLevel).toString()}");
-
-    // Create the current score the Text Painter
-    TextPainter currentScoreTextPainter = TextPainter(
-        text: currentScoreTextSpan,
+            fontWeight: FontWeight.bold,
+          ),
+          text: 'Score: ${_numberFormatter.format(currentScore)} - Level: $currentDifficultyLevel',
+        ),
         textAlign: TextAlign.left,
-        textDirection: TextDirection.ltr);
+        textDirection: TextDirection.ltr,
+      )..layout();
+    }
 
-    currentScoreTextPainter.layout();
-
-    // Paint the current score
-    currentScoreTextPainter.paint(canvas, const Offset(12.0, 16.0));
+    _scorePainter!.paint(canvas, const Offset(12.0, 16.0));
   }
 
   // Paint the game scene
@@ -130,52 +188,37 @@ class GameRenderEngine extends RenderProxyBox {
   void paint(PaintingContext context, Offset offset) {
     if (sceneImage == null) return;
 
-    context.setIsComplexHint();
+    final canvas = context.canvas;
+    final renderBoxSize = size;
+    final fighterVerticalPosition = size.height - 48;
 
-    var paintingContextCanvas = context.canvas;
-    var fighterVerticalPosition = size.height - 48;
-    var renderBoxSize = size;
-
-    // Check if we are at the "Game-intro" screen
+    // Check screen state
     if (currentScreen == 0) {
-      paintingContextCanvas.drawImageRect(
+      // Intro Screen
+      canvas.drawImageRect(
           sceneImage!,
           const Rect.fromLTWH(0, 32, 600.0, 960.0),
           Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
           scenePaint);
-      return;
     } else if (currentScreen == 2) {
-      // Check if the game is over?
-
-      paintingContextCanvas.drawImageRect(
+      // Game Over Screen
+      canvas.drawImageRect(
           sceneImage!,
           const Rect.fromLTWH(0, 992, 600.0, 960.0),
           Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
           scenePaint);
-      paintCurrentScore(paintingContextCanvas);
-      return;
+      paintCurrentScore(canvas);
     } else {
-      // The game is active => we are at the "Game Mode"
-      fighterHorizontalPosition ??= size.width / 2 - 16.0;
-
-      if (fighterHorizontalPosition! < 0) fighterHorizontalPosition = 0;
-
-      if (fighterHorizontalPosition! > renderBoxSize.width - elementSize) {
-        fighterHorizontalPosition = renderBoxSize.width - elementSize;
-      }
-
-      // If all enemies are killed, move to the next level :)
-      if (enemyCharacters.every((enemy) => enemy.killed)) startNewLevel();
-
-      // Paint the game scene
-      paintingContextCanvas.drawImageRect(
+      // Game Active
+      // Background
+      canvas.drawImageRect(
           sceneImage!,
           const Rect.fromLTWH(0, 1952, 600.0, 960.0),
           Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
           scenePaint);
 
-      // Paint the fighter character
-      paintingContextCanvas.drawImageRect(
+      // Fighter
+      canvas.drawImageRect(
           sceneImage!,
           Rect.fromLTWH(64 + (currentFighterCharacter * 32.0), 0, elementSize,
               elementSize),
@@ -183,27 +226,16 @@ class GameRenderEngine extends RenderProxyBox {
               fighterHorizontalPosition!, fighterVerticalPosition, 32, 32),
           scenePaint);
 
-      // Paint the current score
-      paintCurrentScore(paintingContextCanvas);
+      paintCurrentScore(canvas);
 
-      // Paint the enemies characters
+      // Enemies
       for (var enemy in enemyCharacters) {
-        enemy.paint(paintingContextCanvas);
-
-        // Check if the game is over?
-        if (!enemy.killed &&
-            enemy.x! >= fighterHorizontalPosition! &&
-            enemy.x! <= fighterHorizontalPosition! + elementSize &&
-            enemy.y! + elementSize >= fighterVerticalPosition) {
-          // Game over :(
-          currentScreen = 2;
-          return;
-        }
+        enemy.paint(canvas);
       }
 
-      // Paint the weapon bullets
+      // Bullets
       for (var bullet in weaponBullets) {
-        bullet.paint(paintingContextCanvas, renderBoxSize);
+        bullet.paint(canvas, renderBoxSize);
       }
     }
   }

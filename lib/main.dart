@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'engine/game_widget.dart';
+import 'package:space_fighters/engine/game_widget.dart';
 
 void main() {
   // Binding to be initialized before calling runApp.
@@ -16,10 +16,10 @@ void main() {
 
 // the App level UI widget
 class SpaceFightersGame extends StatelessWidget {
-  // This widget is the game root.
-  final GameWidget gameWidget = GameWidget();
 
   SpaceFightersGame({super.key});
+  // This widget is the game root.
+  final GameWidget gameWidget = GameWidget();
 
   @override
   Widget build(BuildContext context) => MediaQuery(

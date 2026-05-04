@@ -1,13 +1,13 @@
 // the Game main UI widget
 import 'package:flutter/material.dart';
 
-import 'game_render_engine.dart';
-import 'game_status.dart';
+import 'package:space_fighters/engine/game_render_engine.dart';
+import 'package:space_fighters/engine/game_status.dart';
 
 class GameWidget extends SingleChildRenderObjectWidget {
-  final GameRenderEngine gameRenderEngine = GameRenderEngine();
 
   GameWidget({super.key});
+  final GameRenderEngine gameRenderEngine = GameRenderEngine();
 
   @override
   RenderObject createRenderObject(BuildContext context) => gameRenderEngine;
