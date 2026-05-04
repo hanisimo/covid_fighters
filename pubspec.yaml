@@ -24,9 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # This package used to provide number formatting
-  intl: ^0.20.2
-
 dev_dependencies:
 
   flutter_launcher_icons: ^0.14.4

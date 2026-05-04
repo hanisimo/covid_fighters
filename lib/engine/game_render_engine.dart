@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:space_fighters/elements/enemy_character.dart';
 import 'package:space_fighters/elements/weapon_bullet.dart';
 
@@ -23,6 +22,23 @@ int currentDifficultyLevel = 1; // Level Difficulty = Enemy Speed
 late List<WeaponBullet> weaponBullets; // Weapon Bullets
 late List<EnemyCharacter> enemyCharacters; // Enemy Characters
 
+String formatScore(int score) {
+  final digits = score.abs().toString();
+  final firstGroupLength = digits.length % 3;
+  final buffer = StringBuffer();
+
+  if (score < 0) buffer.write('-');
+
+  for (var i = 0; i < digits.length; i++) {
+    if (i > 0 && (i - firstGroupLength) % 3 == 0) {
+      buffer.write(',');
+    }
+    buffer.write(digits[i]);
+  }
+
+  return buffer.toString();
+}
+
 class GameRenderEngine extends RenderProxyBox {
   // Select a fighter character randomly
   final int currentFighterCharacter = Random().nextInt(3);
@@ -35,7 +51,6 @@ class GameRenderEngine extends RenderProxyBox {
   TextPainter? _scorePainter;
   int _lastScore = -1;
   int _lastLevel = -1;
-  final _numberFormatter = intl.NumberFormat('###,###,###');
   Size? _lastLayoutSize;
 
   @override
@@ -104,8 +119,8 @@ class GameRenderEngine extends RenderProxyBox {
         enemy.update(currentDifficultyLevel, renderBoxSize);
 
         // Check if the game is over? (Collision with fighter)
-        if (enemy.x! >= fighterHorizontalPosition! &&
-            enemy.x! <= fighterHorizontalPosition! + elementSize &&
+        if (enemy.x >= fighterHorizontalPosition! &&
+            enemy.x <= fighterHorizontalPosition! + elementSize &&
             enemy.y! + elementSize >= fighterVerticalPosition) {
           // Game over :(
           currentScreen = 2;
@@ -191,7 +206,7 @@ class GameRenderEngine extends RenderProxyBox {
             fontWeight: FontWeight.bold,
           ),
           text:
-              'Score: ${_numberFormatter.format(currentScore)} - Level: $currentDifficultyLevel',
+              'Score: ${formatScore(currentScore)} - Level: $currentDifficultyLevel',
         ),
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr,

@@ -3,32 +3,35 @@ import 'package:space_fighters/elements/enemy_character.dart';
 import 'package:space_fighters/engine/game_render_engine.dart';
 
 class WeaponBullet {
-  WeaponBullet(this.fighterHorizontalPosition);
-  double? fighterHorizontalPosition; // Bullet X position (x,y)
-  double? bulletVerticalPosition; // Bullet Y position (x,y)
-  var gameOver = false;
+  WeaponBullet(this.x);
+
+  final double x; // Bullet X position
+  double? y; // Bullet Y position
+  bool gameOver = false;
 
   void update(Size size, List<EnemyCharacter> enemies) {
     if (gameOver) return;
 
-    bulletVerticalPosition = bulletVerticalPosition ?? size.height - 60;
+    // Initialize or update vertical position
+    y = (y ?? size.height - 60) - 6;
 
-    if (bulletVerticalPosition! < 0) {
+    if (y! < 0) {
       gameOver = true;
-    } else {
-      bulletVerticalPosition = bulletVerticalPosition! - 6;
+      return;
+    }
 
-      for (var enemy in enemies) {
-        if (!enemy.killed &&
-            fighterHorizontalPosition! >= enemy.x! &&
-            fighterHorizontalPosition! <= enemy.x! + elementSize &&
-            bulletVerticalPosition! >= enemy.y! &&
-            bulletVerticalPosition! <= enemy.y! + elementSize) {
+    // Optimization: Create bullet Rect once per update
+    final bulletRect = Rect.fromLTWH(x, y!, elementSize, elementSize);
+
+    for (final enemy in enemies) {
+      // Basic collision detection using Rect.overlaps
+      if (!enemy.killed) {
+        final enemyRect = Rect.fromLTWH(enemy.x, enemy.y!, elementSize, elementSize);
+        if (bulletRect.overlaps(enemyRect)) {
           gameOver = enemy.killed = true;
-          // Update the current score depending on: the enemy position * the game level
-          currentScore +=
-              (size.height - (size.height - bulletVerticalPosition!)).ceil() *
-                  currentDifficultyLevel;
+          // Update the current score. 
+          // Note: Simplified (size.height - (size.height - y)) to just y
+          currentScore += y!.ceil() * currentDifficultyLevel;
           return;
         }
       }
@@ -36,15 +39,13 @@ class WeaponBullet {
   }
 
   void paint(Canvas canvas, Size size) {
-    if (gameOver) return;
-
-    bulletVerticalPosition = bulletVerticalPosition ?? size.height - 60;
+    if (gameOver || y == null) return;
 
     canvas.drawImageRect(
-        sceneImage!,
-        const Rect.fromLTWH(32, 0, 32, 32),
-        Rect.fromLTWH(fighterHorizontalPosition!, bulletVerticalPosition!,
-            elementSize, elementSize),
-        scenePaint);
+      sceneImage!,
+      const Rect.fromLTWH(32, 0, 32, 32),
+      Rect.fromLTWH(x, y!, elementSize, elementSize),
+      scenePaint,
+    );
   }
 }

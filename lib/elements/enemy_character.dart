@@ -3,29 +3,30 @@ import 'package:space_fighters/engine/game_render_engine.dart';
 
 class EnemyCharacter {
   EnemyCharacter(this.x);
-  double? x; // Enemy X position (x, y)
-  double? y; // Enemy Y position (x, y)
+
+  double x; // Enemy X position
+  double? y; // Enemy Y position
   bool moveToNextLine = false;
   bool killed = false;
 
   void update(int difficultyLevel, Size size) {
     if (killed) return;
 
-    // Enemy Character vertical position
-    y = y ?? (size.height % elementSize) + 32 + 16;
+    // Enemy Character vertical position initialization
+    y ??= (size.height % elementSize) + 48; // 32 + 16 = 48
 
     if (!moveToNextLine) {
-      x = x! + difficultyLevel;
+      x += difficultyLevel;
 
-      if (x! > size.width - elementSize) {
+      if (x > size.width - elementSize) {
         moveToNextLine = true;
         x = size.width - elementSize;
         y = y! + elementSize;
       }
     } else {
-      x = x! - difficultyLevel;
+      x -= difficultyLevel;
 
-      if (x! < 0) {
+      if (x < 0) {
         moveToNextLine = false;
         y = y! + elementSize;
       }
@@ -33,13 +34,16 @@ class EnemyCharacter {
   }
 
   void paint(Canvas canvas) {
-    // Check if this enemy character is killed or alive?
-    if (!killed) {
-      // We paint only the alive enemy characters
-      if (x! > 0) {
-        canvas.drawImageRect(sceneImage!, const Rect.fromLTWH(0, 0, 32, 32),
-            Rect.fromLTWH(x!, y!, elementSize, elementSize), scenePaint);
-      }
+    if (killed || y == null) return;
+
+    // Only paint if the character is likely visible
+    if (x + elementSize > 0) {
+      canvas.drawImageRect(
+        sceneImage!,
+        const Rect.fromLTWH(0, 0, 32, 32),
+        Rect.fromLTWH(x, y!, elementSize, elementSize),
+        scenePaint,
+      );
     }
   }
 }
