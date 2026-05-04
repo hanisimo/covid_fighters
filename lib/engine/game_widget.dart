@@ -5,7 +5,6 @@ import 'package:space_fighters/engine/game_render_engine.dart';
 import 'package:space_fighters/engine/game_status.dart';
 
 class GameWidget extends SingleChildRenderObjectWidget {
-
   GameWidget({super.key});
   final GameRenderEngine gameRenderEngine = GameRenderEngine();
 
@@ -22,6 +21,7 @@ class GameWidget extends SingleChildRenderObjectWidget {
       // Game is Not Over
       currentScreen = 1;
       gameRenderEngine.startNewLevel(startNewGame: true);
+      gameRenderEngine.startGameLoop();
 
       return;
     }
@@ -33,6 +33,7 @@ class GameWidget extends SingleChildRenderObjectWidget {
     if (currentScreen == 0) {
       // we are at the Game-intro, So Start the game
       currentScreen = 1; // Start the game
+      gameRenderEngine.startGameLoop();
 
       return;
     } else if (currentScreen == 1) {

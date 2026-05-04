@@ -1,29 +1,33 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:space_fighters/engine/game_status.dart';
+import 'package:space_fighters/engine/game_widget.dart';
 import 'package:space_fighters/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Space Fighters starts and handles basic input', (
+    WidgetTester tester,
+  ) async {
+    currentScreen = 0;
+
     await tester.pumpWidget(SpaceFightersGame());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.byType(GameWidget), findsOneWidget);
+    expect(tester.takeException(), isNull);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    final gameCenter = tester.getCenter(find.byType(GameWidget));
+
+    await tester.tapAt(gameCenter);
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(currentScreen, 1);
+    expect(tester.takeException(), isNull);
+
+    await tester.dragFrom(gameCenter, const Offset(24, 0));
+    await tester.pump();
+
+    await tester.tapAt(gameCenter);
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
   });
 }

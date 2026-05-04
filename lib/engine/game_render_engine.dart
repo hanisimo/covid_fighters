@@ -29,20 +29,23 @@ class GameRenderEngine extends RenderProxyBox {
 
   double? fighterHorizontalPosition;
   int? frameCallbackId;
+  bool _frameScheduled = false;
 
   // Caching for Text Rendering Optimization
   TextPainter? _scorePainter;
   int _lastScore = -1;
   int _lastLevel = -1;
   final _numberFormatter = intl.NumberFormat('###,###,###');
+  Size? _lastLayoutSize;
 
   @override
-  bool get sizedByParent => true;
+  void performLayout() {
+    super.performLayout();
 
-  @override
-  void performResize() {
-    super.performResize();
-    if (attached) startNewLevel(startNewGame: true);
+    if (attached && size != _lastLayoutSize) {
+      _lastLayoutSize = size;
+      startNewLevel(startNewGame: true);
+    }
   }
 
   // start a new level
@@ -65,18 +68,20 @@ class GameRenderEngine extends RenderProxyBox {
 
   // FrameCallback Timer
   void frameCallbackTimer(Duration duration) {
+    _frameScheduled = false;
+    frameCallbackId = null;
+
     if (!attached) return;
 
-    // Only update and repaint if the game is active
-    if (currentScreen == 1) {
-      _updateGameLogic();
+    if (currentScreen != 1) {
       markNeedsPaint();
-    } else if (currentScreen == 0 || currentScreen == 2) {
-      // Repaint for intro/outro screens, but don't run game logic
-      markNeedsPaint();
+      return;
     }
 
-    scheduleTransientFrameCallback();
+    _updateGameLogic();
+    markNeedsPaint();
+
+    if (currentScreen == 1) scheduleTransientFrameCallback();
   }
 
   void _updateGameLogic() {
@@ -116,13 +121,11 @@ class GameRenderEngine extends RenderProxyBox {
 
     // Update weapon bullets and prune inactive ones
     weaponBullets.removeWhere((bullet) => bullet.gameOver);
-    
-    // We only check collisions against alive enemies
-    final aliveEnemies = enemyCharacters.where((e) => !e.killed).toList();
+
     for (var bullet in weaponBullets) {
-      bullet.update(renderBoxSize, aliveEnemies);
+      bullet.update(renderBoxSize, enemyCharacters);
     }
-    
+
     // Prune dead enemies from the main list to optimize next frame's iterations
     enemyCharacters.removeWhere((enemy) => enemy.killed);
   }
@@ -136,7 +139,7 @@ class GameRenderEngine extends RenderProxyBox {
         markNeedsPaint();
       });
     }
-    scheduleTransientFrameCallback();
+    if (currentScreen == 1) scheduleTransientFrameCallback();
   }
 
   @override
@@ -145,12 +148,24 @@ class GameRenderEngine extends RenderProxyBox {
       SchedulerBinding.instance.cancelFrameCallbackWithId(frameCallbackId!);
       frameCallbackId = null;
     }
+    _frameScheduled = false;
     super.detach();
   }
 
+  void startGameLoop() {
+    markNeedsPaint();
+    scheduleTransientFrameCallback();
+  }
+
   // Schedule transient frame callback
-  void scheduleTransientFrameCallback() =>
-      frameCallbackId = SchedulerBinding.instance.scheduleFrameCallback(frameCallbackTimer);
+  void scheduleTransientFrameCallback() {
+    if (_frameScheduled || !attached) return;
+
+    _frameScheduled = true;
+    frameCallbackId = SchedulerBinding.instance.scheduleFrameCallback(
+      frameCallbackTimer,
+    );
+  }
 
   // Fire weapon bullet
   void fireWeaponBullet() =>
@@ -162,7 +177,9 @@ class GameRenderEngine extends RenderProxyBox {
 
   // Paint the current score with layout caching
   void paintCurrentScore(Canvas canvas) {
-    if (_scorePainter == null || _lastScore != currentScore || _lastLevel != currentDifficultyLevel) {
+    if (_scorePainter == null ||
+        _lastScore != currentScore ||
+        _lastLevel != currentDifficultyLevel) {
       _lastScore = currentScore;
       _lastLevel = currentDifficultyLevel;
 
@@ -173,7 +190,8 @@ class GameRenderEngine extends RenderProxyBox {
             fontSize: 26.0,
             fontWeight: FontWeight.bold,
           ),
-          text: 'Score: ${_numberFormatter.format(currentScore)} - Level: $currentDifficultyLevel',
+          text:
+              'Score: ${_numberFormatter.format(currentScore)} - Level: $currentDifficultyLevel',
         ),
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr,
@@ -196,35 +214,47 @@ class GameRenderEngine extends RenderProxyBox {
     if (currentScreen == 0) {
       // Intro Screen
       canvas.drawImageRect(
-          sceneImage!,
-          const Rect.fromLTWH(0, 32, 600.0, 960.0),
-          Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
-          scenePaint);
+        sceneImage!,
+        const Rect.fromLTWH(0, 32, 600.0, 960.0),
+        Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
+        scenePaint,
+      );
     } else if (currentScreen == 2) {
       // Game Over Screen
       canvas.drawImageRect(
-          sceneImage!,
-          const Rect.fromLTWH(0, 992, 600.0, 960.0),
-          Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
-          scenePaint);
+        sceneImage!,
+        const Rect.fromLTWH(0, 992, 600.0, 960.0),
+        Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
+        scenePaint,
+      );
       paintCurrentScore(canvas);
     } else {
       // Game Active
       // Background
       canvas.drawImageRect(
-          sceneImage!,
-          const Rect.fromLTWH(0, 1952, 600.0, 960.0),
-          Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
-          scenePaint);
+        sceneImage!,
+        const Rect.fromLTWH(0, 1952, 600.0, 960.0),
+        Rect.fromLTWH(0, 0, renderBoxSize.width, renderBoxSize.height),
+        scenePaint,
+      );
 
       // Fighter
       canvas.drawImageRect(
-          sceneImage!,
-          Rect.fromLTWH(64 + (currentFighterCharacter * 32.0), 0, elementSize,
-              elementSize),
-          Rect.fromLTWH(
-              fighterHorizontalPosition!, fighterVerticalPosition, 32, 32),
-          scenePaint);
+        sceneImage!,
+        Rect.fromLTWH(
+          64 + (currentFighterCharacter * 32.0),
+          0,
+          elementSize,
+          elementSize,
+        ),
+        Rect.fromLTWH(
+          fighterHorizontalPosition!,
+          fighterVerticalPosition,
+          32,
+          32,
+        ),
+        scenePaint,
+      );
 
       paintCurrentScore(canvas);
 
